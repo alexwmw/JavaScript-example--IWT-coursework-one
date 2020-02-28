@@ -22,7 +22,7 @@ function populateTable() {
     var genderValue = document.getElementById("gender").value;
     var tournamentValue = document.getElementById("tournament").value;
     var playerRankValue = document.getElementById("playerRank").value;
-
+    
     //Construct new elements
     var elem = document.getElementById("results");
     var row = document.createElement("tr");
@@ -39,6 +39,39 @@ function populateTable() {
     window.alert(playerValue);
 }
 
+function populateYears(){}
+
 window.onload = function () {
-    document.getElementById("searchButton").onclick = populateTable;
-}
+    $(document).ready(function(){
+        $('#searchButton').click(
+            function(){
+                if(document.getElementById("gender").value === 'mens'
+                    || document.getElementById("gender").value === 'both'){
+                    $.getJSON(
+                    'mens-grand-slam-winners.json',
+                    function(json){
+                        alert("ok!");
+                        /*
+                        var elem = document.getElementById("results");
+                        var row = document.createElement("tr");
+                        // Create nodes from data
+                        var year = document.createTextNode("Hello");
+                        var tournament = document.createTextNode("World");
+                        var winner = document.createTextNode("How");
+                        var runnerUp = document.createTextNode("Are You?");
+                        // Append items to results table
+                        var ls = [year,tournament,winner,runnerUp];
+                        ls.forEach(item => {
+                            var td = document.createElement("td");
+                            td.appendChild(item);
+                            row.appendChild(td);
+                            });
+                        elem.appendChild(row);
+                         */
+                    
+                    })
+                }
+        
+            });
+    });
+};

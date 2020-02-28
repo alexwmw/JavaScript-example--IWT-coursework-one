@@ -12,7 +12,7 @@
   <ItemGroup>
     <None Include="mens-grand-slam-winners.json" />
     <None Include="womens-grand-slam-winners.json" />
-    <None Include="coursework-one.html" />
+    <None Include="index.html" />
     <None Include="script.js" />
   </ItemGroup>
 </Project>

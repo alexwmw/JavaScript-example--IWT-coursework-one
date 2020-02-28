@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\AWRIGH15\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\AWRIGH15\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Coursework-One.-2114191454.00" t="ExcludeRecursive" />
+    <e p="H:\public_www\IWT\IWT-coursework-one" t="IncludeRecursive">
+      <e p="Coursework-One.mdproj" t="IncludeRecursive" />
+      <e p="Coursework-One.sln" t="IncludeFlat" />
+      <e p="index.html" t="Include" />
+      <e p="mens-grand-slam-winners.json" t="Include" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="script.js" t="Include" />
+      <e p="womens-grand-slam-winners.json" t="Include" />
+    </e>
+  </component>
+</project>
