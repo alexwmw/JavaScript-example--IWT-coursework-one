@@ -39,23 +39,32 @@ function populateTable() {
     window.alert(playerValue);
 }
 
+
+function checkCondition() {
+    return true;
+}
+
 function populateYears(){}
 
 window.onload = function () {
     $(document).ready(function(){
         $('#searchButton').click(
             function () {
-                $.getJSON(
-                    'mens-grand-slam-winners.json',
-                    function (mens) {
-                        $.each(
-                            mens.result, function (index,result) {
-                                $('#results').append(
-                                    $('<tr/>')
-                                        .text(result)
-                                );
+                $.getJSON('mens-grand-slam-winners.json',function (mens) {
+                        $.each(mens.result, function (index, entry) {
+                            //$('#results').append($('<tr/>').text(JSON.stringify(result)));
+                            var row = document.createElement("tr");
+                            for ([key, value] of Object.entries(entry)) {
+                                $(row).append($('<td/>').text(value));
                             }
+                            document.getElementById("results").appendChild(row);
+                            
+
+
+
+                        }
                         );
+
                 })
             });
     });
