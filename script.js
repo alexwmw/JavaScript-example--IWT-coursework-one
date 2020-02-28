@@ -44,14 +44,29 @@ function populateYears(){}
 window.onload = function () {
     $(document).ready(function(){
         $('#searchButton').click(
-            function(){
-                if(document.getElementById("gender").value === 'mens'
-                    || document.getElementById("gender").value === 'both'){
-                    $.getJSON(
+            function () {
+                $.getJSON(
                     'mens-grand-slam-winners.json',
-                    function(json){
-                        alert("ok!");
-                        /*
+                    function (mens) {
+                        $.each(
+                            mens.result, function (index,result) {
+                                $('#results').append(
+                                    $('<tr/>')
+                                        .text(result)
+                                );
+                            }
+                        );
+                })
+            });
+    });
+};
+
+
+
+
+
+
+/*
                         var elem = document.getElementById("results");
                         var row = document.createElement("tr");
                         // Create nodes from data
@@ -68,10 +83,3 @@ window.onload = function () {
                             });
                         elem.appendChild(row);
                          */
-                    
-                    })
-                }
-        
-            });
-    });
-};
