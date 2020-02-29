@@ -1,154 +1,93 @@
 ﻿
-
-/* Form IDs
- *  player          [text]
- *  playerCondition [option]
- *  year            [option]
- *  yearCondition   [option]
- *  gender          [option]
- *  tournament      [option]
- *  playerRank      [option]
- *  
- *  
- */
-
-
-
-
-
-
-function populateYears() { }
-
-window.onload = function () {
-    $(document).ready(function () {
-        $('#searchButton').click(
-            function () {
-                $('#results tr:gt(0)').remove();
-                $.getJSON('mens-grand-slam-winners.json', function (mens) {
-                    $.each(mens.result, function (index, entry) {
-                        //$('#results').append($('<tr/>').text(JSON.stringify(result)));
-                        var row = document.createElement("tr");
-                        iteration:
-                        for ([key, value] of Object.entries(entry)) {
-                            //$(row).append($('<td/>').text(value));
-                            switch (key) {
-                                case "year":
-                                    if ($("#year :selected").val() == "any")
-                                        $(row).append($('<td/>').text(value));
-                                    else {
-                                        switch ($("#yearCondition :selected").val()) {
-                                            case "equals":
-                                                if (value == $("#year :selected").val()) {
-                                                    $(row).append($('<td/>').text(value));
-                                                    break;
-                                                }
-                                                else { break iteration; }
-                                            case "greater":
-                                                if (value > $("#year :selected").val()) {
-                                                    $(row).append($('<td/>').text(value));
-                                                    break;
-                                                }
-                                                else { break iteration; }
-                                            case "less":
-                                                if (value < $("#year :selected").val()) {
-                                                    $(row).append($('<td/>').text(value));
-                                                    break;
-                                                }
-                                                else { break iteration; }
-                                        }
-                                    }
-                                    break;
-
-                                case "tournament":
-                                    if ($("#tournament :selected").val() == "any")
-                                        $(row).append($('<td/>').text(value));
-                                    else if ($("#tournament :selected").text() == value)
-                                        $(row).append($('<td/>').text(value));
-                                    else
-                                        break iteration;
-                                    break;
-
-                                case "winner":
-                                    if ($("#playerRank :selected").text() == "Either")
-                                        $(row).append($('<td/>').text(value));
-                                    else
-                                        break iteration;
-                                    break;
-
-                                //$(row).append($('<td/>').text(value));
-                                //break;
-                                case "runner-up":
-                                    if ($("#playerRank :selected").val() == "either")
-                                        $(row).append($('<td/>').text(value));
-                                    else
-                                        break iteration;
-                                    break;
-                            }
-
-
-
-
-                        }
-                        if (row.childNodes.length == 4)
-                            document.getElementById("results").appendChild(row);
-
-
-
-
-                    }
-                    );
-
-                })
-            });
-    });
-};
-
-
-
-
-
-
-/*
-
+function populateYears() {
+    for (var i = (new Date).getFullYear(); i >= 1877; --i)
+        $('#year').append(new Option(i, i));
+}
+function onClick(files) {
+    var fileToUse = $("#gender :selected").val()
+    if (fileToUse == "both") {
+        $.getJSON(files.mens, function (result) {
+            onFileLoad(result);
+        });
+        $.getJSON(files.womens, function (result) {
+            onFileLoad(result);
+        });
+    }
+    else {
+        $.getJSON(eval("files."+fileToUse), function (result) {
+            onFileLoad(result);
+        })
+    }
+}
+function onFileLoad(result) {
+    $.each(result, function (index, element) {
+        $.each(element, function (index, element) {
+            forEachResult(index, element);
+        });
+        if (document.getElementById("results").rows.length > 1) {
+            document.getElementById("noResults").style.display = "none";
+        }
+        else {
+            alert("No Results");
+            document.getElementById("noResults").style.display = "block";
+        }
+    })
+}
+function forEachResult(index, element) {
+    var year =
+        element["year"];
+    var tournament =
+        element["tournament"];
+    var winner =
+        element["winner"];
+    var runnerUp =
+        element["runner-up"];
+    var verified =
+           verifyYear(year)
+        && verifyTournament(tournament)
+        && verifyWinner(winner)
+        && verifyRunnerUp(runnerUp);
+    if (verified) {
+        var row = document.createElement("tr");
+        $(row).append($('<td/>').text(year));
+        $(row).append($('<td/>').text(tournament));
+        $(row).append($('<td/>').text(winner));
+        $(row).append($('<td/>').text(runnerUp));
+        $('#results').append(row);
+    }
+}
+function verifyYear(year) {
+    if ($("#year :selected").text() == "Any")
+        return true;
+    else  
+        switch($("#yearCondition :selected").text()) {
+            case "Equals":
+                return year == $("#year :selected").text();
+            case ">":
+                return year > $("#year :selected").text();
+            case "<":
+                return year < $("#year :selected").text();
+            default:
+                return false;
+    }
+}
+function verifyTournament(tournament) {
+    return ($("#tournament :selected").text() == "Any"
+        || $("#tournament :selected").text() == tournament);      
+}
+function verifyWinner(winner) {
+    return true;
+}
+function verifyRunnerUp(runnerUp) {
+    return true;
+}
+var files = { "mens": 'mens-grand-slam-winners.json', "womens": 'womens-grand-slam-winners.json' }
 
 window.onload = function () {
-    $(document).ready(function(){
-        $('#searchButton').click(
-            function () {
-                $.getJSON('mens-grand-slam-winners.json',function (mens) {
-                        $.each(mens.result, function (index, entry) {
-                            //$('#results').append($('<tr/>').text(JSON.stringify(result)));
-                            var row = document.createElement("tr");
-                            for ([key, value] of Object.entries(entry)) {
-                                $(row).append($('<td/>').text(value));
-                            }
-                            document.getElementById("results").appendChild(row);
-
-
-
-
-                        }
-                        );
-
-                })
-            });
-    });
+    this.populateYears(),
+        $('#searchButton').click(function () {
+            
+            $('#results tr:gt(0)').remove();
+            onClick(files);
+        })
 };
-
-
-                        var elem = document.getElementById("results");
-                        var row = document.createElement("tr");
-                        // Create nodes from data
-                        var year = document.createTextNode("Hello");
-                        var tournament = document.createTextNode("World");
-                        var winner = document.createTextNode("How");
-                        var runnerUp = document.createTextNode("Are You?");
-                        // Append items to results table
-                        var ls = [year,tournament,winner,runnerUp];
-                        ls.forEach(item => {
-                            var td = document.createElement("td");
-                            td.appendChild(item);
-                            row.appendChild(td);
-                            });
-                        elem.appendChild(row);
-                         */
