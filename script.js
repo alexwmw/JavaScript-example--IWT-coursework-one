@@ -12,39 +12,103 @@
  *  
  */
 
-function populateTable() {
-
-    //Get values from form
-    var playerValue = document.getElementById("player").value;
-    var playerConditionValue = document.getElementById("playerCondition").value;
-    var yearValue = document.getElementById("year").value;
-    var yearConditionValue = document.getElementById("yearCondition").value;
-    var genderValue = document.getElementById("gender").value;
-    var tournamentValue = document.getElementById("tournament").value;
-    var playerRankValue = document.getElementById("playerRank").value;
-    
-    //Construct new elements
-    var elem = document.getElementById("results");
-    var row = document.createElement("tr");
-    var year = document.createTextNode("Hello");
-    var tournament = document.createTextNode("World");
-    var winner = document.createTextNode("How");
-    var runnerUp = document.createTextNode("Are You?");
-
-    //Append to table
-    row.appendChild(year);
-    elem.appendChild(row);
-
-    window.alert('Search complete!');
-    window.alert(playerValue);
-}
 
 
-function checkCondition() {
-    return true;
-}
+
 
 function populateYears(){}
+
+window.onload = function () {
+    $(document).ready(function () {
+        $('#searchButton').click(
+            function () {
+                $('#results tr:gt(0)').remove();
+                $.getJSON('mens-grand-slam-winners.json', function (mens) {
+                    $.each(mens.result, function (index, entry) {
+                        //$('#results').append($('<tr/>').text(JSON.stringify(result)));
+                        var row = document.createElement("tr");
+                        iteration:
+                        for ([key, value] of Object.entries(entry)) {
+                            //$(row).append($('<td/>').text(value));
+                            switch (key) {
+                                case "year":
+                                    if ($("#year :selected").val() == "any")
+                                        $(row).append($('<td/>').text(value));
+                                    else {
+                                        switch ($("#yearCondition :selected").val()) {
+                                            case "equals":
+                                                if (value == $("#year :selected").val()) {
+                                                    $(row).append($('<td/>').text(value));
+                                                    break;
+                                                }
+                                                else { break iteration; }
+                                            case "greater":
+                                                if (value > $("#year :selected").val()) {
+                                                    $(row).append($('<td/>').text(value));
+                                                    break;
+                                                }
+                                                else { break iteration; }
+                                            case "less":
+                                                if (value < $("#year :selected").val()) {
+                                                    $(row).append($('<td/>').text(value));
+                                                    break;
+                                                }
+                                                else { break iteration; }
+                                        }
+                                    }
+                                    break;
+
+                                case "tournament":
+                                    if ($("#tournament :selected").val() == "any")
+                                        $(row).append($('<td/>').text(value));
+                                    else if ($("#tournament :selected").text() == value)
+                                        $(row).append($('<td/>').text(value));
+                                    else
+                                        break iteration;
+                                    break;
+
+                                case "winner":
+                                    if ($("#playerRank :selected").text() == "Either")
+                                        $(row).append($('<td/>').text(value));
+                                    else
+                                        break iteration;
+                                    break;
+
+                                //$(row).append($('<td/>').text(value));
+                                //break;
+                                case "runner-up":
+                                    if ($("#playerRank :selected").val() == "either")
+                                        $(row).append($('<td/>').text(value));
+                                    else
+                                        break iteration;
+                                    break;
+                            }
+
+
+
+
+                        }
+                        if (row.childNodes.length == 4)
+                            document.getElementById("results").appendChild(row);
+
+
+
+
+                    }
+                    );
+
+                })
+            });
+    });
+};
+
+
+
+
+
+
+/*
+
 
 window.onload = function () {
     $(document).ready(function(){
@@ -58,7 +122,7 @@ window.onload = function () {
                                 $(row).append($('<td/>').text(value));
                             }
                             document.getElementById("results").appendChild(row);
-                            
+
 
 
 
@@ -71,11 +135,6 @@ window.onload = function () {
 };
 
 
-
-
-
-
-/*
                         var elem = document.getElementById("results");
                         var row = document.createElement("tr");
                         // Create nodes from data
