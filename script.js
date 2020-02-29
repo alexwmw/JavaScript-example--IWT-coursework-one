@@ -16,7 +16,8 @@
 
 
 
-function populateYears(){}
+
+function populateYears() { }
 
 window.onload = function () {
     $(document).ready(function () {
