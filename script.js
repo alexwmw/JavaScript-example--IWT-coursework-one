@@ -24,13 +24,6 @@ function onFileLoad(result) {
         $.each(element, function (index, element) {
             forEachResult(index, element);
         });
-        if (document.getElementById("results").rows.length > 1) {
-            document.getElementById("noResults").style.display = "none";
-        }
-        else {
-            alert("No Results");
-            document.getElementById("noResults").style.display = "block";
-        }
     })
 }
 function forEachResult(index, element) {
@@ -45,8 +38,7 @@ function forEachResult(index, element) {
     var verified =
            verifyYear(year)
         && verifyTournament(tournament)
-        && verifyWinner(winner)
-        && verifyRunnerUp(runnerUp);
+        && verifyPlayer(winner, runnerUp);
     if (verified) {
         var row = document.createElement("tr");
         $(row).append($('<td/>').text(year));
@@ -60,12 +52,12 @@ function verifyYear(year) {
     if ($("#year :selected").text() == "Any")
         return true;
     else  
-        switch($("#yearCondition :selected").text()) {
-            case "Equals":
+        switch($("#yearCondition :selected").val()) {
+            case "equals":
                 return year == $("#year :selected").text();
-            case ">":
+            case "greater":
                 return year > $("#year :selected").text();
-            case "<":
+            case "less":
                 return year < $("#year :selected").text();
             default:
                 return false;
@@ -75,19 +67,35 @@ function verifyTournament(tournament) {
     return ($("#tournament :selected").text() == "Any"
         || $("#tournament :selected").text() == tournament);      
 }
-function verifyWinner(winner) {
-    return true;
+function verifyPlayer(winner, runnerUp) {
+    var condition = $("#playerCondition :selected").val();
+    if (condition == 'none') {
+        return true;
+    }
+    else {
+        var rank = $("#playerRank :selected").val();
+        var player = $("#player").val();
+        switch (condition) {
+            case "equals":
+                return ((rank == "winner" && winner == player) ||
+                    (rank == "runnerUp" && runnerUp == player) ||
+                    rank == "either" && (runnerUp == player || winner == player));
+            case "contains":
+                return ((rank == "winner" && winner.includes(player)) ||
+                    (rank == "runnerUp" && runnerUp.includes(player)) ||
+                    rank == "either" && (runnerUp.includes(player) || winner.includes(player)));
+            default:
+                return false;
+        }
+    }
 }
-function verifyRunnerUp(runnerUp) {
-    return true;
-}
+
 var files = { "mens": 'mens-grand-slam-winners.json', "womens": 'womens-grand-slam-winners.json' }
 
 window.onload = function () {
     this.populateYears(),
         $('#searchButton').click(function () {
-            
             $('#results tr:gt(0)').remove();
-            onClick(files);
+            onClick(files)
         })
 };

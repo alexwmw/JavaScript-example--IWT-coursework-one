@@ -26,7 +26,15 @@
             <table class="formTable" id="formTable1">
                 <tr>
                     <td>
-                        <label for="player">Player Name:</label>
+                        <label for="player">Search term:</label>
+                    </td>
+                    <td colspan="2">
+                        <input name="player" id="player" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="playerCondition">Match condition:</label>
                     </td>
                     <td>
                         <select id="playerCondition" name="playerCondition">
@@ -37,7 +45,7 @@
 
                     </td>
                     <td>
-                        <input name="player" id="player" type="text" />
+                        
                     </td>
                 </tr>
                 <tr>
@@ -47,8 +55,8 @@
                     <td>
                         <select id="yearCondition" name="yearCondition">
                             <option value="equals">Equals</option>
-                            <option value="greater">&gt;</option>
-                            <option value="less">&lt;</option>
+                            <option value="greater">Greater than</option>
+                            <option value="less">Less than</option>
                         </select>
                     </td>
                     <td>
@@ -64,8 +72,8 @@
                     <td>
                         <select name="playerRank" id="playerRank">
                             <option value="either">Either</option>
-                            <option value="Winner">Winner</option>
-                            <option value="Runner-Up">Runner-up</option>
+                            <option value="winner">Winner</option>
+                            <option value="runnerUp">Runner-up</option>
 
                         </select>
                     </td>
@@ -104,7 +112,6 @@
             </table>
             <input type="button" id="searchButton" value="Search" />
         </form>
-
     </div>
     <hr />
     <!-- Results area -->
@@ -122,8 +129,6 @@
             <tbody>
             </tbody>
         </table>
-        <p id="noResults" style="display:block">NO RESULTS</p>
-
     </div>
     <div id="bottomBlock"></div>
 </body>

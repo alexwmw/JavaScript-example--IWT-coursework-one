@@ -18,16 +18,17 @@ h3 {
     text-align:center;
 }
 #resultArea{
-    min-height:500px;
+    min-height:150px;
 }
 
 #bottomBlock{
     background-color: green !important;
-    height: 200px;
-    margin-top: 100px;
+    height: 100px;
+    margin-top: 50px;
 }
 
 /*----Form elements--------------------*/
+
 
 input[type=text] {
     width: 200px;
