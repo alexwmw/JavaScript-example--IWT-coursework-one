@@ -50,7 +50,7 @@ function onClick(files) {
 /**
  * Iterates through the result elements and passes each element to the
  * resultValidator.
- * Updates the resultsCount HTML element to mirror var resultsCount.
+ * Updates the resultsCount HTML element with the number of results.
  * @param {string} file A json file name
  */
 function resultsHandler(file) {
@@ -59,7 +59,11 @@ function resultsHandler(file) {
             resultValidator(index, element);
         });
         document.getElementById("resultsCount").innerHTML =
-            resultsCount + (resultsCount == 1 ? " result" : " results");
+            "Search "
+            + ($("#player").val() ? "\"" + $("#player").val() + "\"" : '')
+            + " returned " + resultsCount
+            + (resultsCount == 1 ? " result" : " results"
+            );
     })
 }
 

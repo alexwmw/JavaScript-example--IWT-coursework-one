@@ -1,5 +1,5 @@
 ﻿
-/*----Body, headings and areas----*/
+/**----Body, headings and areas----*/
 
 body{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,7 +27,7 @@ h3 {
     margin-top: 50px;
 }
 
-/*----Form elements--------------------*/
+/**----Form elements--------------------*/
 
 
 input[type=text] {
@@ -38,7 +38,7 @@ input[type=text] {
     border-radius: 5px;
 }
 select {
-    width: 85px;
+    width: 100px;
     padding: 16px 20px;
     border: solid;
     border-width:1px;
@@ -63,7 +63,7 @@ select {
     background-color: green;
 }
 
-/*----Tables----------------------------*/
+/**----Tables----------------------------*/
 
 table {
     border-collapse: collapse;
