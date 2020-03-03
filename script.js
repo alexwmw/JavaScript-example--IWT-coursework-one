@@ -58,6 +58,8 @@ function resultsHandler(file) {
         $.each(element, function (index, element) {
             resultValidator(index, element);
         });
+		
+		// Contructs string 'Search [player] returned [n] result(s)'
         document.getElementById("resultsCount").innerHTML =
             "Search "
             + ($("#player").val() ? "\"" + $("#player").val() + "\"" : '')
@@ -101,10 +103,10 @@ function resultValidator(index, element) {
  */
 function addValidatedRow(year, tournament, winner, runnerUp) {
     var row = document.createElement("tr");
-    $(row).append($('<td/>').text(year));
-    $(row).append($('<td/>').text(tournament));
-    $(row).append($('<td/>').text(winner));
-    $(row).append($('<td/>').text(runnerUp));
+    $(row).append($('<td/>').text(year))
+    .append($('<td/>').text(tournament))
+    .append($('<td/>').text(winner))
+    .append($('<td/>').text(runnerUp));
     $('#results').append(row);
     resultsCount++;
 }

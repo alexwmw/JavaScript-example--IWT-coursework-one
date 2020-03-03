@@ -22,26 +22,26 @@ h3 {
 }
 
 #bottomBlock{
-    background-color: green !important;
+    background-color: green;
     height: 100px;
     margin-top: 50px;
 }
 
 /**----Form elements--------------------*/
 
-
 input[type=text] {
     width: 200px;
-    height: 18px;
+    height: 20px;
     border: solid;
     border-width: 1px;
     border-radius: 5px;
 }
 select {
     width: 100px;
-    padding: 16px 20px;
+	height: 25px;
     border: solid;
     border-width:1px;
+	border-radius: 5px;
     font-size:12px;
 }
 #tournament{
