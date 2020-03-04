@@ -3,23 +3,33 @@
 var files = {
     "mens": 'mens-grand-slam-winners.json',
     "womens": 'womens-grand-slam-winners.json'
-}
+};
 
 /** Count of the number of search results, to be displayed in the results area*/
 var resultsCount = 0;
 
 /**
- * Adds an option for each year to the year selector. Always starts with the
- * current year. Having all valid years given as options removes the
- * opportunity for the user to input erroneous data.
- * */
-function populateYears() {
-    for (var year = (new Date).getFullYear(); year >= 1877; --year)
-        $('#year').append(new Option(year, year));
+ * Returns true if year in the given range.
+ * Alerts user if year not in range.
+ * @param {string} year A year
+ * @param {number} lower A lower limit
+ * @param {number} upper An upper limit
+ * @returns {boolean}
+ */
+function yearInRange(year, lower, upper){
+    var value = parseInt(year);
+    if (value < lower || value > upper){
+        alert("Enter a year in the proper range, or leave blank. \n" +
+            "Please enter a year between " + lower + " and " + upper);
+        return false;
+    }
+    else
+        return true;
 }
 
 /**
  * Resets results count to zero, and removes any entries from the results table.
+ * Checks year is in range before proceeding.
  * Determines which json files to load.
  * Loads json files.
  * Calls resultsHandler for each file loaded.
@@ -27,23 +37,24 @@ function populateYears() {
  */
 function onClick(files) {
     resultsCount = 0;
+    $("#resultsCount").empty();
     $('#results tr:gt(0)').remove();
-
-    var g = $("#gender :selected").val();
-
-    // Boolean values to determine if mens and/or womens files should be loaded
-    var mens = g == "mens" || g == "both";
-    var womens = g == "womens" || g == "both";
-
-    if (mens) {
-        $.getJSON(files.mens, function (file) {
-            resultsHandler(file);
-        });
-    }
-    if (womens) {
-        $.getJSON(files.womens, function (file) {
-            resultsHandler(file);
-        });
+    if (yearInRange($("#year").val(), 1870, 2021)){
+        var g = $("#gender :selected").val();
+        // Boolean values to determine if mens and/or womens files should be loaded
+        var mens = g === "mens" || g === "both";
+        var womens = g === "womens" || g === "both";
+    
+        if (mens) {
+            $.getJSON(files.mens, function (file) {
+                resultsHandler(file);
+            });
+        }
+        if (womens) {
+            $.getJSON(files.womens, function (file) {
+                resultsHandler(file);
+            });
+        }
     }
 }
 
@@ -59,12 +70,14 @@ function resultsHandler(file) {
             resultValidator(index, element);
         });
 		
-		// Contructs string 'Search [player] returned [n] result(s)'
+		// Contructs string 'Search [searchterm] returned n result(s)'
+        var searchterm = $("#player").val();
         document.getElementById("resultsCount").innerHTML =
             "Search "
-            + ($("#player").val() ? "\"" + $("#player").val() + "\"" : '')
+            + (searchterm && $("#playerCondition").val() !== 'none' 
+            ? "\"" + searchterm + "\"" : '')
             + " returned " + resultsCount
-            + (resultsCount == 1 ? " result" : " results"
+            + (resultsCount === 1 ? " result" : " results"
             );
     })
 }
@@ -112,22 +125,23 @@ function addValidatedRow(year, tournament, winner, runnerUp) {
 }
 
 /**
- * Checks the given year against the user selected year
- * and yearCondition options.
+ * Checks the given year against the user-inputted year
+ * and yearCondition option.
  * @param {number} year
  * @returns {boolean} 
  */
 function validateYear(year) {
-    if ($("#year :selected").text() == "Any")
+    var yearInput = $("#year").val();
+    if (yearInput === "")
         return true;
     else  
         switch($("#yearCondition :selected").val()) {
             case "equals":
-                return year == $("#year :selected").text();
+                return year === parseInt(yearInput);
             case "greater":
-                return year > $("#year :selected").text();
+                return year > parseInt(yearInput);
             case "less":
-                return year < $("#year :selected").text();
+                return year < parseInt(yearInput);
             default:
                 return false;
     }
@@ -139,8 +153,8 @@ function validateYear(year) {
  * @returns {boolean}
  */
 function validateTournament(tournament) {
-    return ($("#tournament :selected").text() == "Any"
-        || $("#tournament :selected").text() == tournament);      
+    return ($("#tournament :selected").text() === "Any"
+        || $("#tournament :selected").text() === tournament);      
 }
 
 /**
@@ -152,7 +166,7 @@ function validateTournament(tournament) {
  */
 function validatePlayer(winner, runnerUp) {
     var condition = $("#playerCondition :selected").val();
-    if (condition == 'none') {
+    if (condition === 'none') {
         return true;
     }
     else {
@@ -162,18 +176,18 @@ function validatePlayer(winner, runnerUp) {
             case "equals":
                 // Returns true if the value of winner or runnerUP is equal
                 // to the user input
-                return ((rank == "winner" && winner == player) ||
-                    (rank == "runnerUp" && runnerUp == player) ||
-                    rank == "either" && (runnerUp == player ||
-                        winner == player));
+                return ((rank === "winner" && winner === player) ||
+                    (rank === "runnerUp" && runnerUp === player) ||
+                    rank === "either" && (runnerUp === player ||
+                        winner === player));
             case "contains":
                 // Will not return true if there is no 'player' input
                 if (player.length > 0)
                     // Returns true if the user input is a substring of winner
                     // or runnerUp
-                    return ((rank == "winner" && winner.includes(player)) ||
-                        (rank == "runnerUp" && runnerUp.includes(player)) ||
-                        rank == "either" && (runnerUp.includes(player) ||
+                    return ((rank === "winner" && winner.includes(player)) ||
+                        (rank === "runnerUp" && runnerUp.includes(player)) ||
+                        rank === "either" && (runnerUp.includes(player) ||
                             winner.includes(player)));
             default:
                 return false;
@@ -182,12 +196,10 @@ function validatePlayer(winner, runnerUp) {
 }
 
 /** On window load:
- * populate year options,
- * call onClick when search is clicked
+ * call onClick when Search is clicked
  * */
 window.onload = function () {
-    this.populateYears(),
-        $('#searchButton').click(function () {
-            onClick(files)
-        })
+    $('#searchButton').click(function () {
+        onClick(files)
+    })
 };

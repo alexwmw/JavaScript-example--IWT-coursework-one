@@ -2,11 +2,9 @@
 /**----Body, headings and areas----*/
 
 body{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align:center;  
 }
 h1{
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color:red;
     padding:20px;
 }
@@ -34,30 +32,30 @@ input[type=text] {
     height: 20px;
     border: solid;
     border-width: 1px;
-    border-radius: 5px;
+}
+input[type=number] {
+    width: 85px;
+    height: 20px;
+    border: solid;
+    border-width: 1px;
+    font-size:12px;
 }
 select {
     width: 100px;
 	height: 25px;
     border: solid;
     border-width:1px;
-	border-radius: 5px;
     font-size:12px;
 }
-#tournament{
-    width:120px;
-}
+
 #searchButton {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-color: lightgreen;
     padding: 9px 30px;
     margin: 20px;
     text-align: center;
-    display: inline-block;
     font-size: 16px;
     border: solid;
     border-width: 1px;
-    border-radius: 5px;
 }
 #searchButton:active {
     background-color: green;

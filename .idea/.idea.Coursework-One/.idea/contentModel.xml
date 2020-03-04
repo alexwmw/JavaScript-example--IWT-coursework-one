@@ -10,6 +10,7 @@
       <e p="mens-grand-slam-winners.json" t="Include" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="script.js" t="Include" />
+      <e p="style.css" t="Include" />
       <e p="womens-grand-slam-winners.json" t="Include" />
     </e>
   </component>
